@@ -1,0 +1,28 @@
+version: '3.7'
+
+services:
+  app:
+    container_name: python-api
+    image: python-api
+    build: .
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    command: " flask run --host=0.0.0.0 --port=5000"
+    networks:
+      - network-api
+  db:
+    container_name: postgres_db
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_USER: "testuser"
+      POSTGRES_PASSWORD: "testpass"
+      POSTGRES_DB: userdb
+    ports:
+      - "5433:5432"
+    networks:
+      - network-api
+networks:
+  network-api:
+    driver: bridge
